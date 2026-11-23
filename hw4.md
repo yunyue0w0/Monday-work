@@ -7,7 +7,7 @@
 
 ## 一、UML 類別圖（Class Diagram）
 
-本系統採用前端物件導向模組化設計，將資料模型（`FoodRecord`）、核心業務與狀態管理（`DiaryManager`）、瀏覽器本地儲存介面（`StorageService`）以及畫面渲染控制器（`UIController`）職責分離：
+本系統採用前端物件導向模組化設計，將資料模型（ `FoodRecord` ）、核心業務與狀態管理（ `DiaryManager` ）、瀏覽器本地儲存介面（ `StorageService` ）以及畫面渲染控制器（ `UIController` ）職責分離：
 
 ```mermaid
 classDiagram
@@ -53,8 +53,8 @@ classDiagram
     DiaryManager --> StorageService : 存取本地資料
     DiaryManager "1" *-- "0..*" FoodRecord : 管理多筆紀錄
 
-sequenceDiagram
-    actor User as 一般使用者 (User)
+    sequenceDiagram
+    actor User as 一般使用者 User
     participant UI as UIController
     participant Manager as DiaryManager
     participant Record as FoodRecord
@@ -91,7 +91,7 @@ sequenceDiagram
     deactivate UI
 
 sequenceDiagram
-    actor User as 一般使用者 (User)
+    actor User as 一般使用者 User
     participant UI as UIController
     participant Manager as DiaryManager
     participant Storage as StorageService
@@ -119,7 +119,36 @@ sequenceDiagram
     deactivate UI
 
 sequenceDiagram
-    actor User as 一般使用者 (User)
+    actor User as 一般使用者 User
+    participant UI as UIController
+    participant Manager as DiaryManager
+    participant Storage as StorageService
+
+    User->>UI: 開啟或重新整理網頁
+    activate UI
+    UI->>Manager: init()
+    activate Manager
+    Manager->>Storage: loadRecords()
+    activate Storage
+    Storage-->>Manager: 回傳本地儲存之 records (或空陣列)
+    deactivate Storage
+
+    alt localStorage 存有紀錄
+        Manager->>Manager: calculateTotalCalories() 逐筆加總熱量
+        Manager-->>UI: 回傳 records 與 totalCalories
+        UI->>UI: renderTotalCalories(totalCalories)
+        UI->>UI: renderRecordList(records)
+    else 初次使用或無任何資料
+        Manager-->>UI: 回傳空陣列與 totalCalories = 0
+        UI->>UI: renderTotalCalories(0)
+        UI->>UI: 渲染預設引導提示畫面
+    end
+    deactivate Manager
+    UI-->>User: 呈現今日儀表板與飲食明細
+    deactivate UI
+
+sequenceDiagram
+    actor User as 一般使用者 User
     participant UI as UIController
     participant Manager as DiaryManager
     participant Storage as StorageService
