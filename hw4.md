@@ -53,7 +53,44 @@ classDiagram
     DiaryManager --> StorageService : 存取本地資料
     DiaryManager "1" *-- "0..*" FoodRecord : 管理多筆紀錄
 
-    sequenceDiagram
+sequenceDiagram
+    actor User as 一般使用者 User
+    participant UI as UIController
+    participant Manager as DiaryManager
+    participant Record as FoodRecord
+    participant Storage as StorageService
+
+    User->>UI: 輸入食物名稱與熱量，點擊「新增紀錄」
+    activate UI
+    UI->>Manager: addRecord(name, calories)
+    activate Manager
+    Manager->>Record: new FoodRecord(name, calories)
+    activate Record
+    Record->>Record: isValid() 驗證欄位與正整數
+    Record-->>Manager: 回傳驗證結果
+    deactivate Record
+
+    alt 資料驗證成功
+        Manager->>Manager: 將紀錄加入 records 陣列
+        Manager->>Manager: calculateTotalCalories() 重新加總
+        Manager->>Storage: saveRecords(records)
+        activate Storage
+        Storage-->>Manager: 儲存完成 (localStorage)
+        deactivate Storage
+        Manager-->>UI: 回傳最新 records 與 totalCalories
+        UI->>UI: renderTotalCalories(totalCalories)
+        UI->>UI: renderRecordList(records)
+        UI->>UI: clearInputs() 清空輸入框
+        UI-->>User: 顯示更新後之總熱量與清單
+    else 資料驗證失敗 (空白或非正整數)
+        Manager-->>UI: 拋出輸入格式錯誤
+        UI->>UI: showAlert("請輸入正確的食物名稱與熱量")
+        UI-->>User: 顯示錯誤提示訊息
+    end
+    deactivate Manager
+    deactivate UI
+
+sequenceDiagram
     actor User as 一般使用者 User
     participant UI as UIController
     participant Manager as DiaryManager
@@ -147,35 +184,6 @@ sequenceDiagram
     UI-->>User: 呈現今日儀表板與飲食明細
     deactivate UI
 
-sequenceDiagram
-    actor User as 一般使用者 User
-    participant UI as UIController
-    participant Manager as DiaryManager
-    participant Storage as StorageService
-
-    User->>UI: 開啟或重新整理網頁
-    activate UI
-    UI->>Manager: init()
-    activate Manager
-    Manager->>Storage: loadRecords()
-    activate Storage
-    Storage-->>Manager: 回傳本地儲存之 records (或空陣列)
-    deactivate Storage
-
-    alt localStorage 存有紀錄
-        Manager->>Manager: calculateTotalCalories() 逐筆加總熱量
-        Manager-->>UI: 回傳 records 與 totalCalories
-        UI->>UI: renderTotalCalories(totalCalories)
-        UI->>UI: renderRecordList(records)
-    else 初次使用或無任何資料
-        Manager-->>UI: 回傳空陣列與 totalCalories = 0
-        UI->>UI: renderTotalCalories(0)
-        UI->>UI: 渲染預設引導提示畫面
-    end
-    deactivate Manager
-    UI-->>User: 呈現今日儀表板與飲食明細
-    deactivate UI
-
 flowchart TD
     Start((開始)) --> Input[/使用者輸入食物名稱與熱量/]
     Input --> Click[點擊「新增紀錄」按鈕]
@@ -216,3 +224,4 @@ flowchart TD
     
     ShowEmpty --> End((結束))
     ShowData --> End
+
