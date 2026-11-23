@@ -44,3 +44,34 @@
 - 營養素（碳水、蛋白質、脂肪）分析與圖表
 - 歷史紀錄查詢與體重追蹤
 - 飲水紀錄與提醒通知
+
+
+------------------
+### 使用案例圖（Use Case Diagram）
+
+本系統主要包含兩類角色：**一般使用者（User）** 負責日常飲食與體態紀錄，**系統管理員（Admin）** 負責維護系統內建食物資料庫。
+
+```mermaid
+flowchart LR
+    User(["👤 一般使用者<br>(User)"])
+    Admin(["🛠️ 系統管理員<br>(Admin)"])
+
+    subgraph System ["飲食熱量追蹤系統 (Calorie Tracking System)"]
+        direction TB
+        UC1(["UC-01: 設定個人檔案與熱量目標"])
+        UC2(["UC-02: 新增飲食紀錄"])
+        UC2_1(["搜尋食物資料庫"])
+        UC2_2(["自訂食物熱量"])
+        UC3(["UC-03: 檢視每日熱量與營養分析"])
+        UC4(["UC-04: 查詢歷史紀錄與體重趨勢"])
+        UC5(["UC-05: 管理系統食物資料庫"])
+    end
+
+    User --- UC1
+    User --- UC2
+    User --- UC3
+    User --- UC4
+    Admin --- UC5
+
+    UC2 -.->|"<<include>>"| UC2_1
+    UC2_2 -.->|"<<extend>>"| UC2
