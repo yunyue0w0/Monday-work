@@ -58,7 +58,7 @@ flowchart LR
     User --- UC2
     User --- UC3
 
-    UC1 -.->|"<<include>>"| UC4
-    UC2 -.->|"<<include>>"| UC4
-    UC3 -.->|"<<include>>"| UC4
+    UC1 -.->|"«include»"| UC4
+    UC2 -.->|"«include»"| UC4
+    UC3 -.->|"«include»"| UC4
     UC4 --- Storage
