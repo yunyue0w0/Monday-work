@@ -163,7 +163,6 @@ deactivate UI
 ## 三、系統流程圖（Flowcharts）
 
 ### 1. 新增飲食流程
-
 ```mermaid
 flowchart TD
 Start((開始)) --> Input[/使用者輸入食物名稱與熱量/]
@@ -203,9 +202,8 @@ RenderEmpty --> End
 ## 一、UML 類別圖（Class Diagram）
 
 本系統採用前端物件導向模組化設計，將資料模型（ `FoodRecord` ）、核心業務與狀態管理（ `DiaryManager` ）、瀏覽器本地儲存介面（ `StorageService` ）以及畫面渲染控制器（ `UIController` ）職責分離：
-
-```
-mermaidclassDiagramclass FoodRecord {+String id+String name+int calories+String createdAt+FoodRecord(String name, int calories)+isValid() boolean}class DiaryManager {
+```mermaid
+classDiagramclass FoodRecord {+String id+String name+int calories+String createdAt+FoodRecord(String name, int calories)+isValid() boolean}class DiaryManager {
     -List~FoodRecord~ records
     -int totalCalories
     -StorageService storageService
@@ -244,7 +242,8 @@ DiaryManager "1" *-- "0..*" FoodRecord : 管理多筆紀錄
 
 ### 1. 新增飲食紀錄流程
 
-mermaidsequenceDiagramactor User as 一般使用者 Userparticipant UI as UIControllerparticipant Manager as DiaryManagerparticipant Record as FoodRecordparticipant Storage as StorageServiceUser->>UI: 輸入食物名稱與熱量，點擊「新增紀錄」
+```mermaid
+sequenceDiagramactor User as 一般使用者 Userparticipant UI as UIControllerparticipant Manager as DiaryManagerparticipant Record as FoodRecordparticipant Storage as StorageServiceUser->>UI: 輸入食物名稱與熱量，點擊「新增紀錄」
 activate UI
 UI->>Manager: addRecord(name, calories)
 activate Manager
@@ -276,7 +275,8 @@ deactivate UI
 
 ### 2. 刪除飲食紀錄流程
 
-mermaidsequenceDiagramactor User as 一般使用者 Userparticipant UI as UIControllerparticipant Manager as DiaryManagerparticipant Storage as StorageServiceUser->>UI: 點擊特定飲食項目右側的「刪除」按鈕
+```mermaid
+sequenceDiagramactor User as 一般使用者 Userparticipant UI as UIControllerparticipant Manager as DiaryManagerparticipant Storage as StorageServiceUser->>UI: 點擊特定飲食項目右側的「刪除」按鈕
 activate UI
 UI->>Manager: deleteRecord(recordId)
 activate Manager
@@ -300,7 +300,8 @@ deactivate UI
 
 ### 3. 頁面初始化與讀取本地資料流程
 
-mermaidsequenceDiagramactor User as 一般使用者 Userparticipant UI as UIControllerparticipant Manager as DiaryManagerparticipant Storage as StorageServiceUser->>UI: 開啟或重新整理網頁
+```mermaid
+sequenceDiagramactor User as 一般使用者 Userparticipant UI as UIControllerparticipant Manager as DiaryManagerparticipant Storage as StorageServiceUser->>UI: 開啟或重新整理網頁
 activate UI
 UI->>Manager: init()
 activate Manager
@@ -329,7 +330,8 @@ deactivate UI
 
 ### 1. 新增飲食流程
 
-mermaidflowchart TDStart((開始)) --> Input[/使用者輸入食物名稱與熱量/]Input --> Click[點擊「新增紀錄」按鈕]Click --> Validate{驗證名稱非空且熱量為正整數?}Validate -- 否 --> Alert[顯示輸入格式錯誤提示訊息]
+```mermaid
+flowchart TDStart((開始)) --> Input[/使用者輸入食物名稱與熱量/]Input --> Click[點擊「新增紀錄」按鈕]Click --> Validate{驗證名稱非空且熱量為正整數?}Validate -- 否 --> Alert[顯示輸入格式錯誤提示訊息]
 Alert --> Input
 
 Validate -- 是 --> CreateObj[建立 FoodRecord 物件並加入清單]
@@ -339,8 +341,8 @@ Save --> Render[更新頁面總熱量與列表並清空輸入框]
 Render --> End((結束))
 
 ### 2. 刪除飲食流程
-
-mermaidflowchart TDStart((開始)) --> Select[使用者點擊目標項目的「刪除」按鈕]Select --> Remove[依 ID 從紀錄清單中移除該筆資料]Remove --> Recalc[重新計算剩餘項目之今日總熱量]Recalc --> Save[將更新後清單覆寫存入 localStorage]Save --> CheckEmpty{清單是否已空?}CheckEmpty -- 否 --> RenderList[更新總熱量並重新渲染飲食清單]
+```mermaid
+flowchart TDStart((開始)) --> Select[使用者點擊目標項目的「刪除」按鈕]Select --> Remove[依 ID 從紀錄清單中移除該筆資料]Remove --> Recalc[重新計算剩餘項目之今日總熱量]Recalc --> Save[將更新後清單覆寫存入 localStorage]Save --> CheckEmpty{清單是否已空?}CheckEmpty -- 否 --> RenderList[更新總熱量並重新渲染飲食清單]
 CheckEmpty -- 是 --> RenderEmpty[總熱量歸零並顯示花椰菜空狀態提示]
 
 RenderList --> End((結束))
