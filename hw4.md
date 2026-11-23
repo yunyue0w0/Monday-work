@@ -52,7 +52,7 @@ class UIController {
 UIController --> DiaryManager : 呼叫業務邏輯
 DiaryManager --> StorageService : 存取本地資料
 DiaryManager "1" *-- "0..*" FoodRecord : 管理多筆紀錄
-
+```
 ---
 
 ## 二、UML 循序圖（Sequence Diagrams）
@@ -96,6 +96,7 @@ else 資料驗證失敗 (空白或非正整數)
 end
 deactivate Manager
 deactivate UI
+```
 
 ### 2. 刪除飲食紀錄流程
 ```mermaid
@@ -126,6 +127,7 @@ else 刪除後已無任何紀錄 (records 為空)
 end
 UI-->>User: 顯示最新總熱量與列表狀態
 deactivate UI
+```
 
 ### 3. 頁面初始化與讀取本地資料流程
 ```mermaid
@@ -157,7 +159,7 @@ end
 deactivate Manager
 UI-->>User: 呈現今日儀表板與飲食明細
 deactivate UI
-
+```
 ---
 
 ## 三、系統流程圖（Flowcharts）
@@ -176,6 +178,7 @@ CreateObj --> Calc[重新加總今日所有紀錄熱量]
 Calc --> Save[將最新清單寫入 localStorage]
 Save --> Render[更新頁面總熱量與列表並清空輸入框]
 Render --> End((結束))
+```
 
 ### 2. 刪除飲食流程
 ```mermaid
@@ -190,12 +193,10 @@ CheckEmpty -- 是 --> RenderEmpty[總熱量歸零並顯示花椰菜空狀態提�
 
 RenderList --> End((結束))
 RenderEmpty --> End
+```
 
 ### 3. 網頁初始化載入流程
 3.貼上修正後的完整內容：複製下方程式碼區塊。點擊下方程式碼區塊右上角的複製圖示，貼進空白的編輯框中（註：為了避免網頁外層框線提早截斷，貼上後請檢查每張圖表前後都有獨立的三個反引號包住）：Markdown# 作業 4：系統設計與 UML 行為建模
-
-## 專題名稱
-花椰菜的飲食日記（簡易飲食熱量追蹤系統）
 
 ---
 
@@ -235,7 +236,7 @@ class UIController {
 UIController --> DiaryManager : 呼叫業務邏輯
 DiaryManager --> StorageService : 存取本地資料
 DiaryManager "1" *-- "0..*" FoodRecord : 管理多筆紀錄
-
+```
 ---
 
 ## 二、UML 循序圖（Sequence Diagrams）
@@ -297,6 +298,7 @@ else 刪除後已無任何紀錄 (records 為空)
 end
 UI-->>User: 顯示最新總熱量與列表狀態
 deactivate UI
+```
 
 ### 3. 頁面初始化與讀取本地資料流程
 
@@ -323,7 +325,7 @@ end
 deactivate Manager
 UI-->>User: 呈現今日儀表板與飲食明細
 deactivate UI
-
+```
 ---
 
 ## 三、系統流程圖（Flowcharts）
@@ -339,6 +341,7 @@ CreateObj --> Calc[重新加總今日所有紀錄熱量]
 Calc --> Save[將最新清單寫入 localStorage]
 Save --> Render[更新頁面總熱量與列表並清空輸入框]
 Render --> End((結束))
+```
 
 ### 2. 刪除飲食流程
 ```mermaid
@@ -347,6 +350,7 @@ CheckEmpty -- 是 --> RenderEmpty[總熱量歸零並顯示花椰菜空狀態提�
 
 RenderList --> End((結束))
 RenderEmpty --> End
+```
 
 ### 3. 網頁初始化載入流程
 ```mermaid
@@ -362,3 +366,4 @@ SumLoop --> ShowData[渲染今日總熱量與完整飲食項目列表]
 
 ShowEmpty --> End((結束))
 ShowData --> End
+```
